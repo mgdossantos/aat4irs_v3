@@ -16,11 +16,11 @@ def main():
     spawn_model_client = rospy.ServiceProxy('/gazebo/spawn_sdf_model', SpawnModel)
     orient = Quaternion(*tf.transformations.quaternion_from_euler(0, 0, 0))
     sensor=random.randint(1,10)
-    #sensor = 2
+
     print(sensor)
     position = Point(0.55, 0.2, 1)
     # to simulate the sensor read. cont is odd means read sensor is red
-    #if sensor % 2 != 0:
+
     if sensor%2==0:
         modelName = 'red_box'
         spawn_model_client(model_name=modelName,

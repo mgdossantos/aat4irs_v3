@@ -5,27 +5,51 @@ import rospy
 import time
 import os.path
 
+
+
+
+class Block:
+    def __init__(self, name, relative_entity_name):
+        self._name = name
+        self._relative_entity_name = relative_entity_name
+
 class ListeningBox:
+
+    _blockListDict = {
+        'red_box': Block('red_box', 'red_box'),
+        'blue_box': Block('blue_box', 'blue_box'),
+
+    }
+
     def __init__(self):
-
         rospy.init_node('get_box_position')
-        g_get_state = rospy.ServiceProxy("/gazebo/get_model_state", GetModelState)
-        rospy.wait_for_service("/gazebo/get_model_state")
+
+    def show_gazebo_models(self):
         try:
-            self.state = g_get_state(model_name="red_box")
-            self.color='red'
-            if self.state.pose.position.x==0.0 and self.state.pose.position.y==0.0 and self.state.pose.position.z==0.0 :
-                self.state = g_get_state(model_name="blue_box")
-                self.color='blue'
-        except Exception as e:
-            rospy.logerr('Error on calling service: %s', str(e))
-            return
+            model_coordinates = rospy.ServiceProxy("/gazebo/get_model_state", GetModelState)
+            rospy.wait_for_service("/gazebo/get_model_state")
+
+            for block in self._blockListDict.values():
+                blockName = str(block._name)
+                resp_coordinates = model_coordinates(blockName, block._relative_entity_name)
+
+                if resp_coordinates.success==True and blockName == 'red_box':
+                    self.state = model_coordinates(model_name="red_box")
+                    self.color = blockName.split('_')[0]
+                    self.x = self.state.pose.position.x
+                    self.y = self.state.pose.position.y
+                    self.z = self.state.pose.position.z
+                if resp_coordinates.success==True and blockName == 'blue_box':
+                    self.state = model_coordinates(model_name="blue_box")
+                    self.color = blockName.split('_')[0]
+                    self.x = self.state.pose.position.x
+                    self.y = self.state.pose.position.y
+                    self.z = self.state.pose.position.z
 
 
-        self.x = self.state.pose.position.x
-        #self.y = self.state.pose.position.x
-        self.y = self.state.pose.position.y
-        self.z = self.state.pose.position.z
+        except rospy.ServiceException as e:
+            rospy.loginfo("Get Model State service call failed:  {0}".format(e))
+
 
 
 
@@ -33,6 +57,7 @@ if __name__ == '__main__':
 
     try:
         box = ListeningBox()
+        box.show_gazebo_models()
     except rospy.ROSInterruptException:
         pass
 

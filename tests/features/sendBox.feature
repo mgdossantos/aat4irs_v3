@@ -15,9 +15,9 @@ Feature: Send box according to the box color to the target with the same color
     And the box is in the conveyor with the position error threshold being less than or equal "0.01" cm in the y-axis
     And the box is in the conveyor with the position error threshold being less than or equal "0.01" cm in the z-axis
     When the pick-and-place finished
-    Then the box should be in the specific target with the position error threshold being less than or equal "0.35" cm in the x-axis
-    Then the box should be in the specific target with the position error threshold being less than or equal "0.35" cm in the y-axis
-    Then the box should be in the specific target with the position error threshold being less than or equal "0.35" cm in the z-axis
+    Then the box should be in the specific target with the position error threshold being less than or equal "0.02" cm in the x-axis
+    Then the box should be in the specific target with the position error threshold being less than or equal "0.02" cm in the y-axis
+    Then the box should be in the specific target with the position error threshold being less than or equal "0.02" cm in the z-axis
 
 
 

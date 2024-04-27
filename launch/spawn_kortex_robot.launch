@@ -179,8 +179,7 @@
 
         <!-- Start RViz -->
         <node name="rviz" pkg="rviz" type="rviz" if="$(arg start_rviz)"/> 
-<!-- Start RViz
-     <node pkg="caseStudy1" name="red_box" type="box.py" output="screen"/> -->
+
 
 
          
